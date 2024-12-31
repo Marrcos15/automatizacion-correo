@@ -1,0 +1,10 @@
+# Archivos y carpetas generados por Python
+__pycache__/
+classes/__pycache__/
+#Archivos y carpetas de configuración
+envCorreos/
+config.ini
+
+#Carpeta de logs
+logs/*.log
+!logs/example.log
