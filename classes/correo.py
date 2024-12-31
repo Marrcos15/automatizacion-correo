@@ -3,7 +3,7 @@ import configparser
 import imaplib
 import email
 from email.header import decode_header
-from typing import Tuple
+from typing import Tuple, List
 from classes.logger import Logger
 
 
@@ -93,10 +93,10 @@ class Correo:
 
         logger.log(f"Total de correos {etiqueta}: {len(mensajes[0].split())}")
         return mensajes
-    
     def decodificar_correos(self, mensaje: Tuple) -> Tuple[str, str, str]:
         """
-        Decodifica el mensaje y extrae el asunto y el cuerpo del correo.
+        Decodifica el mensaje y extrae el asunto y el cuerpo del correo en latin1.
+        Si el correo es multipart/alternative, solo devuelve el HTML.
         """
         if isinstance(mensaje, tuple):
             # Decodificar el mensaje
@@ -107,62 +107,96 @@ class Correo:
 
             # Verificar si el asunto es de tipo bytes y decodificarlo
             if isinstance(subject, bytes):
-                # Decodificar si es necesario
                 try:
-                    subject = subject.decode(encoding or "utf-8")
+                    subject = subject.decode(encoding or "latin1")
                 except Exception as e:
-                    logger.error(f"Error al decodificar el asunto: {e}")
+                    logger.warning(f"Error al decodificar el asunto: {e}")
                     subject = "Error al decodificar el asunto"
             elif isinstance(subject, str):
                 # Si el asunto ya es de tipo string, no necesitamos decodificarlo
                 pass
             else:
-                logger.error("El asunto tiene un formato inesperado.")
+                logger.warning("El asunto tiene un formato inesperado.")
                 subject = "Asunto no disponible"
 
-            logger.log(f"Asunto: {subject}")
-
-            # Obtener el remitente
+            # Obtener el remitente y decodificarlo si es necesario
             from_ = msg.get("From")
-            logger.log(f"De: {from_}")
-
-            # Verificar si el correo tiene partes
-            if msg.is_multipart():
-                for part in msg.walk():
-                    # Si es texto o HTML
-                    content_type = part.get_content_type()
-                    content_disposition = str(part.get("Content-Disposition"))
-
-                    if content_type == "text/plain" or content_type == "text/html":
-                        try:
-                            # Intenta decodificar el cuerpo
-                            body = part.get_payload(decode=True).decode()
-                            logger.log(f"Cuerpo ({content_type}):\n{body}")
-                        except Exception as e:
-                            logger.error(f"Error al decodificar el cuerpo del mensaje. Detalles: {e}")
-                    else:
-                        logger.log(f"Parte del mensaje no es de texto o HTML. Tipo: {content_type}")
-            else:
-                # Si no es multipart
+            if isinstance(from_, bytes):
                 try:
-                    body = msg.get_payload(decode=True).decode()
-                    logger.log(f"Cuerpo:\n{body}")
+                    from_ = from_.decode(encoding or "latin1")
+                except Exception as e:
+                    logger.error(f"Error al decodificar el remitente: {e}")
+                    from_ = "Error al decodificar el remitente"
+
+            # Inicializamos 'body' como None para manejarlo más adelante
+            body = "Cuerpo no disponible"
+
+            if msg.is_multipart():
+
+                # Si el correo es multipart/alternative, primero buscamos el HTML
+                for part in msg.walk():
+                    content_type = part.get_content_type()
+
+                    # Si encontramos una parte HTML, la priorizamos
+                    if content_type == "text/html":
+                        try:
+                            body = part.get_payload(decode=True).decode("latin1", errors="replace")
+                            break  # Salimos del bucle al encontrar el HTML
+                        except Exception as e:
+                            logger.warning(f"Error al decodificar el cuerpo HTML. Detalles: {e}")
+
+                    # Si encontramos texto plano solo después de no haber encontrado HTML, lo procesamos
+                    elif content_type == "text/plain":
+                        try:
+                            body = part.get_payload(decode=True).decode("latin1", errors="replace")
+                            break
+                        except Exception as e:
+                            logger.warning(f"Error al decodificar el cuerpo de texto. Detalles: {e}")
+
+            else:
+                # Si no es multipart, simplemente decodificamos el cuerpo
+                try:
+                    body = msg.get_payload(decode=True).decode("latin1", errors="replace")
+                    
                 except Exception as e:
                     logger.error(f"Error al decodificar el cuerpo del mensaje. Detalles: {e}")
+            
+            correo = {
+                "asunto": subject,
+                "remitente": from_,
+                "cuerpo": body
+            }
+            logger.log(f"Correo decodificado: {correo}")
+            return correo
 
-            return subject, from_, body
-
-
-    def obtener_correos(self, mensajes: list) -> None:
+    def obtener_correos(self, mensajes: list) -> List[dict]:
         """
         Obtiene los correos sin leer.
         """
-        mensajes_sin_leer = mensajes[0].split()
-        for num in mensajes_sin_leer:
-            status, mensaje_sin_leer = self.imap.fetch(num, "(RFC822)")
+        todos_los_mensajes = {}
+        mensajes = mensajes[0].split()
+        for num in mensajes:
+            status, mensaje_data = self.imap.fetch(num, "(RFC822)")
             if status == "OK":
-                logger.log(f"Obteniendo correo sin leer: {num}")
+                logger.log(f"Obteniendo correo sin leer: {num.decode('utf-8')}")
+                dict_correo = self.decodificar_correos(mensaje_data[0])
+                
+                todos_los_mensajes[num.decode('utf-8')] = dict_correo
             else:
-                logger.error(f"Error al obtener el correo sin leer. Detalles: {mensaje_sin_leer}")
+                logger.error(f"Error al obtener el correo sin leer. Detalles: {mensaje_data}")
 
-            self.decodificar_correos(mensaje_sin_leer[0])
+        return todos_los_mensajes
+            
+    def obtener_todos_noleidos(self) -> None:
+        """
+        Obtiene todos los correos no enviados.
+        """
+        # Seleccionar la bandeja de entrada
+        self.seleccionar_bandeja("inbox")
+
+        # Obtener los correos sin leer
+        mensajes = self.filtrar_correo("UNSEEN")
+        
+        no_leidos = self.obtener_correos(mensajes)
+        
+        return no_leidos
