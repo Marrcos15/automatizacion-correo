@@ -1,8 +1,11 @@
 import socket  # Importación necesaria para manejar socket.gaierror
 import configparser
 import imaplib
+import email
+from email.header import decode_header
 from typing import Tuple
-from logger import Logger
+from classes.logger import Logger
+
 
 
 
@@ -24,18 +27,19 @@ def cargar_configuracion(ruta: str) -> configparser.ConfigParser:
 
     return config
 
-
 class Correo:
-    def __init__(self, config: configparser.ConfigParser):
-        """
-        Inicializa la conexión IMAP utilizando los valores de configuración.
-        """
-        self.username = config["login"]["username"].strip()
-        self.password = config["login"]["password"].strip()
-        self.imap_server = config["login"]["imap_server"].strip()
+    def __init__(self):
+        self.config = cargar_configuracion("config.ini")
+        self.username = self.config["login"]["username"].strip()
+        self.password = self.config["login"]["password"].strip()
+        self.imap_server = self.config["login"]["imap_server"].strip()
+        self.imap = self.conectar_al_correo()
 
+
+    def conectar_al_correo(self) -> object:
+        #Conectar al servidor IMAP
         try:
-            self.imap = imaplib.IMAP4_SSL(self.imap_server)
+            imap = imaplib.IMAP4_SSL(self.imap_server)
             logger.log("Conexion al servidor IMAP establecida.")
         except socket.gaierror as e:
             logger.error(f"Error al resolver el servidor IMAP: {self.imap_server}. Detalles: {e}")
@@ -44,95 +48,121 @@ class Correo:
             logger.error(f"Error al inicializar la conexion IMAP: {e}")
             raise ValueError(f"Error al inicializar la conexion IMAP: {e}")
 
-    def conectar_al_correo(self, opcion: str) -> None:
-        """
-        Conecta al correo y ejecuta la operacion indicada.
-        """
+        #Autenticacion al correo
         try:
-            self.imap.login(self.username, self.password)
-            logger.log("Autenticacion exitosa.")
-
-            
-            if opcion != "":
-                #Opciones con las que cuenta el programa    
-                match(opcion):
-                    case "Total sin leer":
-                        self.obtener_total_correos_sin_leer()
-            
-            else:
-                logger.warning(f"Opcion no reconocida: {opcion}")
-                
-            
+            imap.login(self.username, self.password)
+            logger.log("Autenticacion exitosa.")               
         except imaplib.IMAP4.error as e:
             logger.error(f"Error de autenticacion o conexion: {e}")
         except Exception as e:
             logger.error(f"Error inesperado: {e}")
-        finally:
-            self._cerrar_conexion()
 
-    def obtener_total_correos_sin_leer(self) -> None:
-        """
-        Obtiene el número total de correos no leídos en la bandeja de entrada.
-        """
-        if not self._seleccionar_bandeja("inbox"):
-            return
+        return imap
 
-        status, messages = self.filtrar_correos("UNSEEN")
+    def desconectar_del_correo(self) -> None:
+        """
+        Cierra la conexión con el servidor de correo.
+        """
+        self.imap.logout()
+        logger.log("Conexion IMAP cerrada.")
+
+    def seleccionar_bandeja(self, bandeja: str) -> object:
+        """
+        Selecciona una bandeja de correo.
+        """
+        status, mensajes = self.imap.select(bandeja)
         if status != "OK":
-            logger.error("Error al buscar correos no leídos.")
-            return
+            logger.error(f"Error al seleccionar la bandeja de correo: {bandeja}. Detalles: {mensajes}")
+        else:
+            logger.log(f"Bandeja de correo seleccionada: {bandeja}")
 
-        email_ids = messages[0].split()
-        logger.log(f"Tienes {len(email_ids)} mensajes sin leer.")
+        return self.imap
 
-    def filtrar_correos(self, etiqueta: str) -> Tuple[str, list]:
+    def filtrar_correo(self, etiqueta: str) -> list:
         """
         Filtra correos según la etiqueta proporcionada.
         """
         try:
-            status, messages = self.imap.search(None, etiqueta)
+            status, mensajes = self.imap.search(None, etiqueta)
             if status != "OK":
                 logger.error(f"Error al buscar correos con la etiqueta '{etiqueta}'.")
-                return status, []
-            return status, messages
+                return "ERROR", []
         except Exception as e:
-            logger.error(f"Error al filtrar correos: {e}")
+            logger.error(f"Error al buscar correos con la etiqueta '{etiqueta}'. Detalles: {e}")
             return "ERROR", []
 
-    def _seleccionar_bandeja(self, bandeja: str) -> bool:
+        logger.log(f"Total de correos {etiqueta}: {len(mensajes[0].split())}")
+        return mensajes
+    
+    def decodificar_correos(self, mensaje: Tuple) -> Tuple[str, str, str]:
         """
-        Selecciona una bandeja de correo.
+        Decodifica el mensaje y extrae el asunto y el cuerpo del correo.
         """
-        try:
-            status, _ = self.imap.select(bandeja)
-            if status != "OK":
-                logger.error(f"No se pudo seleccionar la bandeja: {bandeja}.")
-                return False
-            return True
-        except Exception as e:
-            logger.error(f"Error al seleccionar la bandeja '{bandeja}': {e}")
-            return False
+        if isinstance(mensaje, tuple):
+            # Decodificar el mensaje
+            msg = email.message_from_bytes(mensaje[1])
 
-    def _cerrar_conexion(self) -> None:
-        """
-        Cierra la conexión con el servidor IMAP si está autenticado.
-        """
-        try:
-            if self.imap.state == "AUTH":
-                self.imap.logout()
-                logger.log("Conexion IMAP cerrada.")
-        except Exception as e:
-            logger.error(f"Error al cerrar la conexion: {e}")
+            # Obtener el asunto
+            subject, encoding = decode_header(msg["Subject"])[0]
+
+            # Verificar si el asunto es de tipo bytes y decodificarlo
+            if isinstance(subject, bytes):
+                # Decodificar si es necesario
+                try:
+                    subject = subject.decode(encoding or "utf-8")
+                except Exception as e:
+                    logger.error(f"Error al decodificar el asunto: {e}")
+                    subject = "Error al decodificar el asunto"
+            elif isinstance(subject, str):
+                # Si el asunto ya es de tipo string, no necesitamos decodificarlo
+                pass
+            else:
+                logger.error("El asunto tiene un formato inesperado.")
+                subject = "Asunto no disponible"
+
+            logger.log(f"Asunto: {subject}")
+
+            # Obtener el remitente
+            from_ = msg.get("From")
+            logger.log(f"De: {from_}")
+
+            # Verificar si el correo tiene partes
+            if msg.is_multipart():
+                for part in msg.walk():
+                    # Si es texto o HTML
+                    content_type = part.get_content_type()
+                    content_disposition = str(part.get("Content-Disposition"))
+
+                    if content_type == "text/plain" or content_type == "text/html":
+                        try:
+                            # Intenta decodificar el cuerpo
+                            body = part.get_payload(decode=True).decode()
+                            logger.log(f"Cuerpo ({content_type}):\n{body}")
+                        except Exception as e:
+                            logger.error(f"Error al decodificar el cuerpo del mensaje. Detalles: {e}")
+                    else:
+                        logger.log(f"Parte del mensaje no es de texto o HTML. Tipo: {content_type}")
+            else:
+                # Si no es multipart
+                try:
+                    body = msg.get_payload(decode=True).decode()
+                    logger.log(f"Cuerpo:\n{body}")
+                except Exception as e:
+                    logger.error(f"Error al decodificar el cuerpo del mensaje. Detalles: {e}")
+
+            return subject, from_, body
 
 
-# Ejecución del programa principal
-if __name__ == "__main__":
-    try:
-        config = cargar_configuracion("./config.ini")
-        correo = Correo(config)
-        correo.conectar_al_correo("Total sin leer")
-        correo._cerrar_conexion()
-    except ValueError as e:
-        logger.error(f"Error de configuracion: {e}")
-    except Exception as e:
-        logger.error(f"Error inesperado: {e}")
+    def obtener_correos(self, mensajes: list) -> None:
+        """
+        Obtiene los correos sin leer.
+        """
+        mensajes_sin_leer = mensajes[0].split()
+        for num in mensajes_sin_leer:
+            status, mensaje_sin_leer = self.imap.fetch(num, "(RFC822)")
+            if status == "OK":
+                logger.log(f"Obteniendo correo sin leer: {num}")
+            else:
+                logger.error(f"Error al obtener el correo sin leer. Detalles: {mensaje_sin_leer}")
+
+            self.decodificar_correos(mensaje_sin_leer[0])
