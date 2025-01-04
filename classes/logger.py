@@ -1,6 +1,7 @@
 import os
 import logging
 from datetime import datetime
+import sys  # Import necesario para manejar codificación
 
 class Logger:
     def __init__(self, programa: str):
@@ -24,11 +25,11 @@ class Logger:
                                       datefmt='%Y-%m-%d %H:%M:%S')
 
         # Crear un handler para el archivo de log
-        file_handler = logging.FileHandler(self.archivo_log)
+        file_handler = logging.FileHandler(self.archivo_log, encoding="utf-8")
         file_handler.setFormatter(formatter)
 
         # Crear un handler para la consola
-        console_handler = logging.StreamHandler()
+        console_handler = logging.StreamHandler(sys.stdout)
         console_handler.setFormatter(formatter)
 
         # Configurar el logger

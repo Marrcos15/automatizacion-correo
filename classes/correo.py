@@ -59,12 +59,20 @@ class Correo:
 
         return imap
 
-    def desconectar_del_correo(self) -> None:
+    def desconectar_del_correo(self):
         """
-        Cierra la conexión con el servidor de correo.
+        Cierra la conexión al servidor de correo de forma segura.
         """
-        self.imap.logout()
-        logger.log("Conexion IMAP cerrada.")
+        logger.log("Desconectando del servidor de correo.")
+        try:
+            if self.imap is not None:
+                # Verifica si la conexión sigue activa
+                if self.imap.state == 'SELECTED' or self.imap.state == 'AUTH':
+                    self.imap.logout()
+                else:
+                    logger.log("La conexión IMAP ya estaba cerrada.")
+        except Exception as e:
+            logger.error(f"Error al intentar desconectar: {e}")
 
     def seleccionar_bandeja(self, bandeja: str) -> object:
         """
@@ -93,6 +101,7 @@ class Correo:
 
         logger.log(f"Total de correos {etiqueta}: {len(mensajes[0].split())}")
         return mensajes
+    
     def decodificar_correos(self, mensaje: Tuple) -> Tuple[str, str, str]:
         """
         Decodifica el mensaje y extrae el asunto y el cuerpo del correo en latin1.
@@ -176,7 +185,7 @@ class Correo:
         todos_los_mensajes = {}
         mensajes = mensajes[0].split()
         for num in mensajes:
-            status, mensaje_data = self.imap.fetch(num, "(RFC822)")
+            status, mensaje_data = self.imap.fetch(num, "(BODY.PEEK[])")
             if status == "OK":
                 logger.log(f"Obteniendo correo sin leer: {num.decode('utf-8')}")
                 dict_correo = self.decodificar_correos(mensaje_data[0])
@@ -198,5 +207,7 @@ class Correo:
         mensajes = self.filtrar_correo("UNSEEN")
         
         no_leidos = self.obtener_correos(mensajes)
+        
+        self.desconectar_del_correo()
         
         return no_leidos
