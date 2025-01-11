@@ -8,6 +8,9 @@ from classes.logger import Logger
 
 
 class Correo:
+    """
+    Clase para interactuar con un servidor de correo IMAP.
+    """
     def __init__(self):
         self.logger = Logger("automatizacion_correo")
         self.config = self.cargar_configuracion("config.ini")
@@ -119,6 +122,8 @@ class Correo:
     def cargar_configuracion(self, ruta: str) -> configparser.ConfigParser:
         """
         Carga y valida el archivo de configuración.
+        
+        :param ruta: Ruta del archivo de configuración.
         """
         config = configparser.ConfigParser()
         config.read(ruta)
@@ -132,6 +137,12 @@ class Correo:
 
 
     def conectar_al_correo(self) -> object:
+        """
+        Conecta al servidor de correo IMAP y se autentica
+        con las credenciales proporcionadas.
+        
+        :return: Objeto de conexión IMAP.
+        """
         #Conectar al servidor IMAP
         try:
             imap = imaplib.IMAP4_SSL(self.imap_server)
@@ -154,9 +165,10 @@ class Correo:
 
         return imap
 
-    def desconectar_del_correo(self):
+    def desconectar_del_correo(self) -> None:
         """
         Cierra la conexión al servidor de correo de forma segura.
+
         """
         self.logger.log("Desconectando del servidor de correo.")
         try:
@@ -172,6 +184,8 @@ class Correo:
     def seleccionar_bandeja(self, bandeja: str) -> object:
         """
         Selecciona una bandeja de correo.
+        
+        :param bandeja: Nombre de la bandeja de correo a seleccionar.
         """
         status, mensajes = self.imap.select(bandeja)
         if status != "OK":
@@ -184,6 +198,9 @@ class Correo:
     def filtrar_correo(self, filtro: str) -> list:
         """
         Filtra correos según la etiqueta proporcionada.
+        
+        :param filtro: Filtro de búsqueda de correos.
+        :return: Lista de IDs de mensajes que cumplen con el filtro en bytes (b'5').
         """
         try:
             status, mensajes = self.imap.search(None, filtro)
@@ -203,6 +220,9 @@ class Correo:
         """
         Decodifica el mensaje y extrae el asunto y el cuerpo del correo en latin1.
         Si el correo es multipart/alternative, solo devuelve el HTML.
+        
+        :param mensaje: Tupla con el mensaje decodificado.
+        :return: Tupla con el asunto, remitente y cuerpo del correo.
         """
         if isinstance(mensaje, tuple):
             # Decodificar el mensaje
@@ -267,16 +287,21 @@ class Correo:
                 except Exception as e:
                     self.logger.error(f"Error al decodificar el cuerpo del mensaje. Detalles: {e}")
             
+            # Crear un diccionario con los datos del correo
             correo = {
                 "asunto": subject,
                 "remitente": from_,
                 "cuerpo": body
             }
+            
             return correo
 
     def obtener_correos(self, mensajes: list) -> List[dict]:
         """
-        Obtiene los correos sin leer.
+        Obtiene los correos y los deja sin leer.
+        
+        :param mensajes: Lista de IDs de mensajes a obtener.
+        :return: Lista de diccionarios con los correos decodificados.
         """
         todos_los_mensajes = {}
 
@@ -291,9 +316,11 @@ class Correo:
 
         return todos_los_mensajes
             
-    def obtener_todos_noleidos(self) -> None:
+    def obtener_todos_noleidos(self) -> List[dict]:
         """
         Obtiene todos los correos no enviados.
+        
+        :return: Lista de diccionarios con los correos no leidos.
         """
         # Seleccionar la bandeja de entrada
         self.seleccionar_bandeja("inbox")
@@ -333,6 +360,9 @@ class Correo:
     def eliminar_correos(self, mensajes: list) -> bool:
         """
         Elimina los correos proporcionados.
+        
+        :param mensajes: Lista de IDs de mensajes a eliminar
+        :return: True si los mensajes se eliminaron correctamente.
         """
         for num in mensajes:
             status, _ = self.imap.store(num, '+FLAGS', '\\Deleted')
@@ -446,6 +476,8 @@ class Correo:
     def total_mensajes(self) -> int:
         """
         Obtiene el total de mensajes en la bandeja de entrada.
+        
+        :return: Número total de mensajes en la bandeja de entrada.
         """
         status, mensajes = self.imap.search(None, "ALL")
         if status != "OK":

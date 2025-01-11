@@ -7,6 +7,8 @@ class Logger:
     def __init__(self, programa: str):
         """
         Inicializa el Logger para crear el archivo de log en la carpeta `logs`.
+        
+        :param programa: Nombre del programa que se usará en el archivo de log.
         """
         self.programa = programa
         self.carpeta_logs = "logs"
@@ -32,7 +34,7 @@ class Logger:
         console_handler = logging.StreamHandler(sys.stdout)
         console_handler.setFormatter(formatter)
 
-        # Configurar el logger
+        # Configurar el logger 
         self.logger = logging.getLogger(self.programa)
         self.logger.setLevel(logging.DEBUG)
         self.logger.addHandler(file_handler)
@@ -46,9 +48,11 @@ class Logger:
         log_filter.filter = self._add_programa
         self.logger.addFilter(log_filter)
 
-    def _add_programa(self, record):
+    def _add_programa(self, record) -> bool:
         """
         Añade el atributo 'programa' al registro del log.
+        
+        :param record: Registro del log.
         """
         record.programa = self.programa
         return True

@@ -49,24 +49,3 @@ except Exception as e:
 finally:
     # Desconectar del servidor de correo
     correo.desconectar_del_correo()
-    
-
-"""
-try:
-    # Obtener los mensajes del correo de la bandeja de entrada
-    mensajes = correo.obtener_todos_noleidos()
-    
-    for key in mensajes:
-        correo.logger.log(f"Asunto: {mensajes[key]['asunto']} - Remitente: {mensajes[key]['remitente']}")
-        #Etiquetar mensajes
-
-except Exception as e:
-    correo.logger.error(f"Error: {e}")
-
-finally:
-    # Desconectar del servidor de correo
-    correo.desconectar_del_correo()
-
-
-#correo.mover_correos("Inbox", r"Banco/Santander", "unseen")
-"""
