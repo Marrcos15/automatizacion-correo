@@ -1,3 +1,137 @@
-2024-12-31 10:52:23 [INFO]: Conexion al servidor IMAP establecida.
-2024-12-31 10:52:24 [INFO]: Autenticacion exitosa.
-2024-12-31 10:52:24 [INFO]: Tienes 2 mensajes sin leer.
+2025-01-19 17:55:33 [INFO]: Conexion al servidor IMAP establecida.
+2025-01-19 17:55:34 [INFO]: Autenticacion exitosa.
+2025-01-19 17:55:34 [INFO]: Etiquetas cargadas correctamente desde el archivo JSON.
+2025-01-19 17:55:34 [DEBUG]: Filtro encontrado para la etiqueta 'openbank'
+2025-01-19 17:56:12 [INFO]: Conexion al servidor IMAP establecida.
+2025-01-19 17:56:13 [INFO]: Autenticacion exitosa.
+2025-01-19 17:56:13 [INFO]: Etiquetas cargadas correctamente desde el archivo JSON.
+2025-01-19 17:57:01 [INFO]: Conexion al servidor IMAP establecida.
+2025-01-19 17:57:02 [INFO]: Autenticacion exitosa.
+2025-01-19 17:57:02 [INFO]: Etiquetas cargadas correctamente desde el archivo JSON.
+2025-01-19 17:58:08 [INFO]: Conexion al servidor IMAP establecida.
+2025-01-19 17:58:09 [INFO]: Autenticacion exitosa.
+2025-01-19 17:58:09 [INFO]: Etiquetas cargadas correctamente desde el archivo JSON.
+2025-01-19 17:58:28 [INFO]: Conexion al servidor IMAP establecida.
+2025-01-19 17:58:29 [INFO]: Autenticacion exitosa.
+2025-01-19 17:58:29 [INFO]: Etiquetas cargadas correctamente desde el archivo JSON.
+2025-01-19 17:58:29 [DEBUG]: Filtro encontrado para la etiqueta 'openbank'
+2025-01-19 17:58:29 [DEBUG]: Filtro encontrado para la etiqueta 'santander'
+2025-01-19 17:58:29 [DEBUG]: Filtro encontrado para la etiqueta 'infojobs'
+2025-01-19 17:58:29 [DEBUG]: Filtro encontrado para la etiqueta 'linkedin'
+2025-01-19 17:58:29 [DEBUG]: Filtro encontrado para la etiqueta 'tecnoempleo'
+2025-01-19 17:58:29 [DEBUG]: Filtro encontrado para la etiqueta 'steam'
+2025-01-19 17:58:29 [DEBUG]: Filtro encontrado para la etiqueta 'ea'
+2025-01-19 17:58:29 [DEBUG]: Filtro encontrado para la etiqueta 'chess.com'
+2025-01-19 17:58:29 [DEBUG]: Filtro encontrado para la etiqueta 'github'
+2025-01-19 17:58:29 [DEBUG]: Filtro encontrado para la etiqueta 'google'
+2025-01-19 17:58:29 [DEBUG]: Filtro encontrado para la etiqueta 'make'
+2025-01-19 17:58:29 [DEBUG]: Filtro encontrado para la etiqueta 'notion'
+2025-01-19 17:58:29 [DEBUG]: Filtro encontrado para la etiqueta 'facebook'
+2025-01-19 17:58:29 [DEBUG]: Filtro encontrado para la etiqueta 'instagram'
+2025-01-19 17:58:29 [DEBUG]: Filtro encontrado para la etiqueta 'nominas'
+2025-01-19 17:58:29 [DEBUG]: Filtro encontrado para la etiqueta 'netflix'
+2025-01-19 17:58:29 [DEBUG]: Filtro encontrado para la etiqueta 'spotify'
+2025-01-19 17:58:29 [DEBUG]: Filtro encontrado para la etiqueta 'pccomponentes'
+2025-01-19 17:58:29 [INFO]: Bandeja de correo seleccionada: INBOX
+2025-01-19 17:58:29 [INFO]: Total de mensajes en la bandeja de entrada: 26
+2025-01-19 17:58:29 [INFO]: Etiqueta: banco/openbank - Filtro: FROM openbank
+2025-01-19 17:58:29 [INFO]: Total de correos FROM openbank: 0
+2025-01-19 17:58:29 [INFO]: No hay mensajes con el filtro FROM openbank
+2025-01-19 17:58:29 [INFO]: Etiqueta: banco/santander - Filtro: FROM santander
+2025-01-19 17:58:29 [INFO]: Total de correos FROM santander: 0
+2025-01-19 17:58:29 [INFO]: No hay mensajes con el filtro FROM santander
+2025-01-19 17:58:29 [INFO]: Etiqueta: busqueda-de-trabajo/infojobs - Filtro: FROM infojobs
+2025-01-19 17:58:30 [INFO]: Total de correos FROM infojobs: 7
+2025-01-19 17:58:30 [ERROR]: La carpeta destino 'busqueda-de-trabajo/infojobs' no existe.
+2025-01-19 17:58:30 [DEBUG]: Se marcó como no leído el mensaje b'5'
+2025-01-19 17:58:30 [DEBUG]: Se marcó como no leído el mensaje b'6'
+2025-01-19 17:58:30 [DEBUG]: Se marcó como no leído el mensaje b'7'
+2025-01-19 17:58:31 [DEBUG]: Se marcó como no leído el mensaje b'9'
+2025-01-19 17:58:31 [DEBUG]: Se marcó como no leído el mensaje b'10'
+2025-01-19 17:58:31 [DEBUG]: Se marcó como no leído el mensaje b'19'
+2025-01-19 17:58:31 [DEBUG]: Se marcó como no leído el mensaje b'26'
+2025-01-19 17:58:31 [INFO]: Total de mensajes movidos: 7 de 26
+2025-01-19 17:58:31 [INFO]: Etiqueta: busqueda-de-trabajo/linkedin - Filtro: FROM linkedin
+2025-01-19 17:58:31 [INFO]: Total de correos FROM linkedin: 3
+2025-01-19 17:58:31 [INFO]: Se seleccionó la carpeta 'INBOX'
+2025-01-19 17:58:31 [DEBUG]: Intentando copiar mensaje b'23' a 'busqueda-de-trabajo/linkedin'
+2025-01-19 17:58:32 [DEBUG]: Se copió el mensaje b'23' a 'busqueda-de-trabajo/linkedin'
+2025-01-19 17:58:32 [DEBUG]: Intentando copiar mensaje b'24' a 'busqueda-de-trabajo/linkedin'
+2025-01-19 17:58:32 [DEBUG]: Se copió el mensaje b'24' a 'busqueda-de-trabajo/linkedin'
+2025-01-19 17:58:32 [DEBUG]: Intentando copiar mensaje b'25' a 'busqueda-de-trabajo/linkedin'
+2025-01-19 17:58:33 [DEBUG]: Se copió el mensaje b'25' a 'busqueda-de-trabajo/linkedin'
+2025-01-19 17:58:34 [INFO]: Se eliminó los mensajes [b'23', b'24', b'25'] de 'INBOX'
+2025-01-19 17:58:34 [DEBUG]: Se marcó como no leído el mensaje b'23'
+2025-01-19 17:58:35 [DEBUG]: Se marcó como no leído el mensaje b'24'
+2025-01-19 17:58:35 [DEBUG]: Se marcó como no leído el mensaje b'25'
+2025-01-19 17:58:35 [INFO]: Total de mensajes movidos: 10 de 26
+2025-01-19 17:58:35 [INFO]: Etiqueta: busqueda-de-trabajo/tecnoempleo - Filtro: FROM tecnoempleo
+2025-01-19 17:58:35 [INFO]: Total de correos FROM tecnoempleo: 0
+2025-01-19 17:58:35 [INFO]: No hay mensajes con el filtro FROM tecnoempleo
+2025-01-19 17:58:35 [INFO]: Etiqueta: plataformas-juegos/steam - Filtro: FROM steam
+2025-01-19 17:58:35 [INFO]: Total de correos FROM steam: 0
+2025-01-19 17:58:35 [INFO]: No hay mensajes con el filtro FROM steam
+2025-01-19 17:58:35 [INFO]: Etiqueta: plataformas-juegos/ea - Filtro: FROM ea
+2025-01-19 17:58:35 [INFO]: Total de correos FROM ea: 0
+2025-01-19 17:58:35 [INFO]: No hay mensajes con el filtro FROM ea
+2025-01-19 17:58:35 [INFO]: Etiqueta: plataformas-juegos/chess.com - Filtro: FROM chess.com
+2025-01-19 17:58:35 [INFO]: Total de correos FROM chess.com: 0
+2025-01-19 17:58:35 [INFO]: No hay mensajes con el filtro FROM chess.com
+2025-01-19 17:58:35 [INFO]: Etiqueta: plataformas-programacion/github - Filtro: FROM github
+2025-01-19 17:58:35 [INFO]: Total de correos FROM github: 0
+2025-01-19 17:58:35 [INFO]: No hay mensajes con el filtro FROM github
+2025-01-19 17:58:35 [INFO]: Etiqueta: plataformas-programacion/google - Filtro: FROM google
+2025-01-19 17:58:36 [INFO]: Total de correos FROM google: 0
+2025-01-19 17:58:36 [INFO]: No hay mensajes con el filtro FROM google
+2025-01-19 17:58:36 [INFO]: Etiqueta: plataformas-programacion/make - Filtro: FROM make
+2025-01-19 17:58:36 [INFO]: Total de correos FROM make: 0
+2025-01-19 17:58:36 [INFO]: No hay mensajes con el filtro FROM make
+2025-01-19 17:58:36 [INFO]: Etiqueta: plataformas-programacion/notion - Filtro: FROM notion
+2025-01-19 17:58:36 [INFO]: Total de correos FROM notion: 0
+2025-01-19 17:58:36 [INFO]: No hay mensajes con el filtro FROM notion
+2025-01-19 17:58:36 [INFO]: Etiqueta: redes-sociales/facebook - Filtro: FROM facebook
+2025-01-19 17:58:36 [INFO]: Total de correos FROM facebook: 0
+2025-01-19 17:58:36 [INFO]: No hay mensajes con el filtro FROM facebook
+2025-01-19 17:58:36 [INFO]: Etiqueta: redes-sociales/instagram - Filtro: FROM instagram
+2025-01-19 17:58:36 [INFO]: Total de correos FROM instagram: 0
+2025-01-19 17:58:36 [INFO]: No hay mensajes con el filtro FROM instagram
+2025-01-19 17:58:36 [INFO]: Etiqueta: trabajo/nominas - Filtro: FROM nominas
+2025-01-19 17:58:36 [INFO]: Total de correos FROM nominas: 0
+2025-01-19 17:58:36 [INFO]: No hay mensajes con el filtro FROM nominas
+2025-01-19 17:58:36 [INFO]: Etiqueta: plataformas/netflix - Filtro: FROM netflix
+2025-01-19 17:58:37 [INFO]: Total de correos FROM netflix: 0
+2025-01-19 17:58:37 [INFO]: No hay mensajes con el filtro FROM netflix
+2025-01-19 17:58:37 [INFO]: Etiqueta: plataformas/spotify - Filtro: FROM spotify
+2025-01-19 17:58:37 [INFO]: Total de correos FROM spotify: 0
+2025-01-19 17:58:37 [INFO]: No hay mensajes con el filtro FROM spotify
+2025-01-19 17:58:37 [INFO]: Etiqueta: compras/pccomponentes - Filtro: FROM pccomponentes
+2025-01-19 17:58:37 [INFO]: Total de correos FROM pccomponentes: 8
+2025-01-19 17:58:37 [INFO]: Se seleccionó la carpeta 'INBOX'
+2025-01-19 17:58:37 [DEBUG]: Intentando copiar mensaje b'4' a 'compras/pccomponentes'
+2025-01-19 17:58:37 [DEBUG]: Se copió el mensaje b'4' a 'compras/pccomponentes'
+2025-01-19 17:58:37 [DEBUG]: Intentando copiar mensaje b'11' a 'compras/pccomponentes'
+2025-01-19 17:58:38 [DEBUG]: Se copió el mensaje b'11' a 'compras/pccomponentes'
+2025-01-19 17:58:38 [DEBUG]: Intentando copiar mensaje b'15' a 'compras/pccomponentes'
+2025-01-19 17:58:38 [DEBUG]: Se copió el mensaje b'15' a 'compras/pccomponentes'
+2025-01-19 17:58:38 [DEBUG]: Intentando copiar mensaje b'16' a 'compras/pccomponentes'
+2025-01-19 17:58:38 [DEBUG]: Se copió el mensaje b'16' a 'compras/pccomponentes'
+2025-01-19 17:58:38 [DEBUG]: Intentando copiar mensaje b'17' a 'compras/pccomponentes'
+2025-01-19 17:58:39 [DEBUG]: Se copió el mensaje b'17' a 'compras/pccomponentes'
+2025-01-19 17:58:39 [DEBUG]: Intentando copiar mensaje b'18' a 'compras/pccomponentes'
+2025-01-19 17:58:39 [DEBUG]: Se copió el mensaje b'18' a 'compras/pccomponentes'
+2025-01-19 17:58:39 [DEBUG]: Intentando copiar mensaje b'21' a 'compras/pccomponentes'
+2025-01-19 17:58:39 [DEBUG]: Se copió el mensaje b'21' a 'compras/pccomponentes'
+2025-01-19 17:58:39 [DEBUG]: Intentando copiar mensaje b'22' a 'compras/pccomponentes'
+2025-01-19 17:58:40 [DEBUG]: Se copió el mensaje b'22' a 'compras/pccomponentes'
+2025-01-19 17:58:43 [INFO]: Se eliminó los mensajes [b'4', b'11', b'15', b'16', b'17', b'18', b'21', b'22'] de 'INBOX'
+2025-01-19 17:58:43 [DEBUG]: Se marcó como no leído el mensaje b'4'
+2025-01-19 17:58:43 [DEBUG]: Se marcó como no leído el mensaje b'11'
+2025-01-19 17:58:43 [DEBUG]: Se marcó como no leído el mensaje b'15'
+2025-01-19 17:58:43 [DEBUG]: Se marcó como no leído el mensaje b'16'
+2025-01-19 17:58:43 [DEBUG]: Se marcó como no leído el mensaje b'17'
+2025-01-19 17:58:44 [DEBUG]: Se marcó como no leído el mensaje b'18'
+2025-01-19 17:58:44 [DEBUG]: Se marcó como no leído el mensaje b'21'
+2025-01-19 17:58:44 [DEBUG]: Se marcó como no leído el mensaje b'22'
+2025-01-19 17:58:44 [INFO]: Total de mensajes movidos: 18 de 26
+2025-01-19 17:58:44 [WARNING]: No se movieron todos los mensajes
+2025-01-19 17:59:57 [INFO]: Desconectando del servidor de correo.
