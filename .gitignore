@@ -1,6 +1,8 @@
 # Archivos y carpetas generados por Python
 __pycache__/
-classes/__pycache__/
+*/__pycache__/
+__init__.py
+*/__init__.py
 #Archivos y carpetas de configuración
 envCorreos/
 config.ini
