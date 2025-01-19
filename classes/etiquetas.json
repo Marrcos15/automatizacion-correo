@@ -1,0 +1,110 @@
+{
+    "arbol_etiquetas": {    
+        "banco" : ["openbank", "santander"],
+        "busqueda-de-trabajo": ["infojobs", "linkedin", "tecnoempleo"],
+        "plataformas-juegos" : ["steam", "ea", "chess.com"],
+        "plataformas-programacion" : ["github", "google", "make", "notion","canvas"],
+        "pruebas": [],
+        "redes-sociales" : ["facebook", "instagram"],
+        "trabajo": ["nominas"],
+        "plataformas": ["netflix","spotify"],
+        "compras": ["pccomponentes"]
+    },
+    "filtro_etiquetas" : {
+        "openbank": {
+            "remitente" : "openbank",
+            "asunto": "",
+            "cuerpo": ""
+        },
+        "santander": {
+            "remitente": "santander",
+            "asunto": "",
+            "cuerpo": ""
+        },
+        "infojobs": {
+            "remitente": "infojobs",
+            "asunto": "",
+            "cuerpo": ""
+        },
+        "linkedin": {
+            "remitente": "linkedin",
+            "asunto": "",
+            "cuerpo": ""
+        },
+        "tecnoempleo": {
+            "remitente": "tecnoempleo",
+            "asunto": "",
+            "cuerpo": ""
+        },
+        "steam": {
+            "remitente": "steam",
+            "asunto": "",
+            "cuerpo": ""
+        },
+        "ea": {
+            "remitente": "ea",
+            "asunto": "",
+            "cuerpo": ""
+        },
+        "chess.com": {
+            "remitente": "chess.com",
+            "asunto": "",
+            "cuerpo": ""
+        },
+        "github": {
+            "remitente": "github",
+            "asunto": "",
+            "cuerpo": ""
+        },
+        "google": {
+            "remitente": "google",
+            "asunto": "",
+            "cuerpo": ""
+        },
+        "make": {
+            "remitente": "make",
+            "asunto": "",
+            "cuerpo": ""
+        },
+        "notion": {
+            "remitente": "notion",
+            "asunto": "",
+            "cuerpo": ""
+        },
+        "nominas": {
+            "remitente": "nominas",
+            "asunto": "",
+            "cuerpo": ""
+        },
+        "facebook": {
+            "remitente": "facebook",
+            "asunto": "",
+            "cuerpo": ""
+        },
+        "instagram": {
+            "remitente": "instagram",
+            "asunto": "",
+            "cuerpo": ""
+        },
+        "netflix": {
+            "remitente": "netflix",
+            "asunto": "",
+            "cuerpo": ""
+        },
+        "spotify": {
+            "remitente": "spotify",
+            "asunto": "",
+            "cuerpo": ""
+        },
+        "pccomponentes": {
+            "remitente" : "pccomponentes",
+            "asunto" : "",
+            "cuerpo": ""
+        },
+        "canvas":{
+            "remitente" : "canvas",
+            "asunto" : "",
+            "cuerpo" : ""
+        }
+    }
+}

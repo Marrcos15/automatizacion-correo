@@ -38,9 +38,7 @@ class Logger:
         self.logger = logging.getLogger(self.programa)
         self.logger.setLevel(logging.DEBUG)
         self.logger.addHandler(file_handler)
-        
         # No mostrar debug en consola
-        self.logger.setLevel(logging.INFO)
         self.logger.addHandler(console_handler)
 
         # Crear un filtro para agregar el programa al log

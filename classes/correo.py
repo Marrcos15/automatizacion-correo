@@ -1,3 +1,4 @@
+import json
 import socket  # Importación necesaria para manejar socket.gaierror
 import configparser
 import imaplib
@@ -19,105 +20,10 @@ class Correo:
         self.imap_server = self.config["login"]["imap_server"].strip()
         self.imap = self.conectar_al_correo()
         
-        
-        #Etiquetas
-        self.arbol_etiquetas = {
-            'banco' : ['openbank', 'santander'],
-            'busqueda-de-trabajo': ['infojobs', 'linkedin', 'tecnoempleo'],
-            'plataformas-juegos' : ['steam', 'ea', 'chess.com'],
-            'plataformas-programacion' : ['github', 'google', 'make', 'notion'],
-            'pruebas': [],
-            'redes-sociales' : ['facebook', 'instagram'],
-            'trabajo': ['nominas'],
-            'plataformas': ['netflix','spotify']
-        }
-        self.filtro_etiquetas = {
-            'openbank': {
-                'remitente': 'openbank',
-                'asunto': '',
-                'cuerpo': '',
-            },
-            'santander': {
-                'remitente': 'santander',
-                'asunto': '',
-                'cuerpo': '',
-            },
-            'infojobs': {
-                'remitente': 'infojobs',
-                'asunto': '',
-                'cuerpo': '',
-            },
-            'linkedin': {
-                'remitente': 'linkedin',
-                'asunto': '',
-                'cuerpo': '',
-            },
-            'tecnoempleo': {
-                'remitente': 'tecnoempleo',
-                'asunto': '',
-                'cuerpo': '',
-            },
-            'steam': {
-                'remitente': 'steam',
-                'asunto': '',
-                'cuerpo': '',
-            },
-            'ea': {
-                'remitente': 'ea',
-                'asunto': '',
-                'cuerpo': '',
-            },
-            'chess.com': {
-                'remitente': 'chess.com',
-                'asunto': '',
-                'cuerpo': '',
-            },
-            'github': {
-                'remitente': 'github',
-                'asunto': '',
-                'cuerpo': '',
-            },
-            'google': {
-                'remitente': 'google',
-                'asunto': '',
-                'cuerpo': '',
-            },
-            'make': {
-                'remitente': 'make',
-                'asunto': '',
-                'cuerpo': '',
-            },
-            'notion': {
-                'remitente': 'notion',
-                'asunto': '',
-                'cuerpo': '',
-            },
-            'nominas': {
-                'remitente': 'nominas',
-                'asunto': '',
-                'cuerpo': '',
-            },
-            'facebook': {
-                'remitente': 'facebook',
-                'asunto': '',
-                'cuerpo': '',
-            },
-            'instagram': {
-                'remitente': 'instagram',
-                'asunto': '',
-                'cuerpo': '',
-            },
-            'netflix': {
-                'remitente': 'netflix',
-                'asunto': '',
-                'cuerpo': '',
-            },
-            'spotify': {
-                'remitente': 'spotify',
-                'asunto': '',
-                'cuerpo': '',
-            }
-        }
+        # Cargar etiquetas desde un archivo JSON
+        etiquetas = self.cargar_etiquetas("./classes/etiquetas.json")
+        self.arbol_etiquetas = etiquetas["arbol_etiquetas"]
+        self.filtro_etiquetas = etiquetas["filtro_etiquetas"]
         
     def cargar_configuracion(self, ruta: str) -> configparser.ConfigParser:
         """
@@ -134,7 +40,20 @@ class Correo:
             raise ValueError("Archivo de configuracion incompleto o inexistente.")
 
         return config
-
+    
+    def cargar_etiquetas(self, ruta: str) -> dict:
+        """Carga las etiquetas desde un archivo JSON
+        :param ruta (str): Ruta del archivo JSON
+        :return: Diccionario con las etiquetas
+        """
+        try:
+            with open(ruta, "r", encoding="utf-8") as archivo:
+                etiquetas = json.load(archivo)
+            self.logger.log("Etiquetas cargadas correctamente desde el archivo JSON.")
+            return etiquetas
+        except Exception as e:
+            self.logger.error(f"Error al cargar las etiquetas desde el archivo JSON: {e}")
+            raise ValueError(f"Error al cargar las etiquetas desde el archivo JSON: {e}")
 
     def conectar_al_correo(self) -> object:
         """
